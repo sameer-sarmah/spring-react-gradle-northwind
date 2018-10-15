@@ -1,0 +1,15 @@
+group = 'spring-react-gradle-northwind'
+version = '0.0.1-SNAPSHOT'
+apply plugin:'base'
+task buildApp(type: GradleBuild) {
+    group 'application'
+    setTasks([ ':ui:cleanNpm', ':ui:npmBuild',':service:clean',':service:build'])
+}
+
+task wrapper(type: Wrapper) {
+    group 'init'
+    gradleVersion '4.8'
+    distributionType Wrapper.DistributionType.ALL
+}
+
+build.dependsOn 'buildApp'

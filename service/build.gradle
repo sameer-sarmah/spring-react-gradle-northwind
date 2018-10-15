@@ -1,0 +1,51 @@
+apply plugin: 'war'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+group 'spring-react-gradle-northwind'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.apache.httpcomponents:httpclient:4.3.4"
+    implementation "org.springframework.boot:spring-boot-starter-web:2.0.5.RELEASE"
+    implementation "org.springframework.boot:spring-boot-starter:2.0.5.RELEASE"
+    implementation "log4j:log4j:1.2.17"
+}
+
+
+task cleanDirs(type: Delete) {
+    doFirst{
+    delete "${projectDir}/build"
+    delete fileTree("${projectDir}/src/main/webapp/"){
+        exclude("WEB-INF/*")
+    }
+    println("Deleted files in build and webapp directory using gradle")
+    
+    }
+}
+
+task copyFiles(dependsOn: ['cleanDirs']){
+        doLast{
+        println("Started copying built files from resources to webapp using gradle")
+		copy{
+			from 'src/main/resources'
+			into 'src/main/webapp'
+		}
+        println("Completed copying built files from resources to webapp using gradle")
+        }
+}
+
+war {
+    archiveName = "ingestion.war"
+    doLast{
+        println("WAR file generated")
+    }
+}
+
+clean.dependsOn ':service:copyFiles'

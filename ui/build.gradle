@@ -1,0 +1,55 @@
+buildscript {
+    ext {
+        gradleNodeVersion = '1.2.0'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+
+    dependencies {
+        classpath "com.moowork.gradle:gradle-node-plugin:$gradleNodeVersion"
+    }
+}
+
+apply plugin: 'com.moowork.node'
+apply plugin:'base'
+
+node {
+  version = '8.11.4'
+  npmVersion = '5.6.0'
+  download = true
+  workDir = file("${projectDir}/node")
+  nodeModulesDir = file("${projectDir}")
+}
+
+task cleanNpm(type: Delete) {
+    dependsOn 'clean'
+    doFirst{
+    delete "${projectDir}/build", "${rootDir}/service/src/main/resources/static"
+    }
+}
+
+task npmUpdate {
+    dependsOn 'npm_update'
+}
+
+
+task npmBuild(type: NpmTask, dependsOn: ["npmInstall"]) {
+   doFirst{ println("Staring npm build using gradle") }
+    args = ["run", "build"]
+   doLast{
+        println("Started copying built files from ui to service using gradle")
+        copy{
+        from ('build')
+        into '../service/src/main/resources'
+        }
+        println("Completed copying built files ui to service using gradle")
+        println("Completed npm build using gradle")
+   }
+}
+
+group 'spring-react-gradle'
+version '1.0-SNAPSHOT'
+
+
