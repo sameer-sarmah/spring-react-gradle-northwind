@@ -5,6 +5,7 @@ import client.HttpMethod;
 import exceptions.CoreException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,14 +19,14 @@ import java.util.*;
 
 @RestController
 public class NorthWindController {
-    private final String service="https://services.odata.org/Northwind/Northwind.svc/Products";
+    private final String service="https://services.odata.org/Northwind/Northwind.svc/Products?$format=json";
 
   final  HttpClient httpClient=new HttpClient();
 
     @Autowired
     private HttpServletRequest request;
 
-    @RequestMapping( value = "/Products",method = RequestMethod.GET)
+    @RequestMapping( value = "/Products",method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getProducts() {
         Map<String,String> headers = this.getHeaders(this.request);
         Map<String,String> queryParams =this.getQueryParameters(this.request);

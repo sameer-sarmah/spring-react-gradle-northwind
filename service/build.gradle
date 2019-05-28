@@ -1,6 +1,7 @@
 apply plugin: 'war'
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'groovy'
 
 group 'spring-react-gradle-northwind'
 version '1.0-SNAPSHOT'
@@ -16,6 +17,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:2.0.5.RELEASE"
     implementation "org.springframework.boot:spring-boot-starter:2.0.5.RELEASE"
     implementation "log4j:log4j:1.2.17"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:2.0.5.RELEASE"
 }
 
 
