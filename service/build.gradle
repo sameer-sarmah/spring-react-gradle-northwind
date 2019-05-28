@@ -50,4 +50,13 @@ war {
     }
 }
 
+test {
+    doFirst {
+		println("running tests")
+		println(System.getProperty("spring.profiles.active"))
+		println(System.properties['spring.profiles.active'])
+		systemProperties = System.properties
+    }
+}
+
 clean.dependsOn ':service:copyFiles'
